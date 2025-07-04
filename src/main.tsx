@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import DashboardLayouts from "./components/layouts/dashboard-layouts";
+import ContentCreate from "./components/dashboard/content-create";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <h1>Dashboard Prompt Page</h1>,
+        element: <ContentCreate />,
       },
     ],
   },

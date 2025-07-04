@@ -8,7 +8,7 @@ const DashboardLayouts = () => {
       <Sidebar />
       <div className="w-full p-4">
         <Navbar />
-        <div className="mt-4">
+        <div className="p-8">
           <Outlet />
         </div>
       </div>
