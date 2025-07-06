@@ -4,6 +4,7 @@ import ContentViewer from "../components/dashboard/content-viwer";
 import ContentCreate from "../components/dashboard/content-create";
 import type { ContentCreateParams } from "../shared/types/content-create-params";
 import { useAppContext } from "../context/app.context";
+import toast from "react-hot-toast";
 
 const DashboardHome = () => {
   const { generatingContent, setGeneratingContent } = useAppContext();
@@ -17,6 +18,7 @@ const DashboardHome = () => {
       setContent(result);
     } catch (e) {
       console.log(e, "error accurated");
+      toast.error("Error occurred while generating content");
     } finally {
       setGeneratingContent(false);
     }

@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -8,14 +9,23 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+
 import ReactMarkdown from "react-markdown";
 type ContentViwerProps = {
   content: string;
 };
 
 export default function ContentViewer({ content }: ContentViwerProps) {
+  const handelCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(content);
+      toast.success("Content copied to clipboard");
+    } catch (e) {
+      console.log(e, "error accurated");
+      toast.error("Error occurred while copying content");
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -36,7 +46,7 @@ export default function ContentViewer({ content }: ContentViwerProps) {
         <Button type="submit" className="w-full">
           Share
         </Button>
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full" onClick={handelCopy}>
           Copy
         </Button>
         <Button variant="outline" className="w-full">
