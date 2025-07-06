@@ -4,7 +4,7 @@ import { Outlet } from "react-router";
 
 const DashboardLayouts = () => {
   return (
-    <div className=" h-screen overflow-hidden flex">
+    <div className=" h-screen overflow-x-hidden flex">
       <Sidebar />
       <div className="w-full p-4">
         <Navbar />
