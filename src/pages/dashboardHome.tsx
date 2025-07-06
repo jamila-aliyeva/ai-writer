@@ -3,16 +3,23 @@ import { generateContent } from "../utils/openai";
 import ContentViewer from "../components/dashboard/content-viwer";
 import ContentCreate from "../components/dashboard/content-create";
 import type { ContentCreateParams } from "../shared/types/content-create-params";
+import { useAppContext } from "../context/app.context";
 
 const DashboardHome = () => {
-  const [isLoading, setisLoading] = useState(false);
+  const { generatingContent, setGeneratingContent } = useAppContext();
   const [content, setContent] = useState<string | null>(null);
 
   const handleSubmit = async (params: ContentCreateParams) => {
-    setisLoading(true);
+    setGeneratingContent(true);
     const { title, description } = params;
-    const result = await generateContent(title, description);
-    setContent(result);
+    try {
+      const result = await generateContent(title, description);
+      setContent(result);
+    } catch (e) {
+      console.log(e, "error accurated");
+    } finally {
+      setGeneratingContent(false);
+    }
   };
 
   return (
@@ -21,7 +28,7 @@ const DashboardHome = () => {
       {content ? (
         <ContentViewer content={content} />
       ) : (
-        <ContentCreate isLoading={isLoading} onSubmit={handleSubmit} />
+        <ContentCreate isLoading={generatingContent} onSubmit={handleSubmit} />
       )}
     </div>
   );
