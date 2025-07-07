@@ -1,4 +1,4 @@
-export type ContentCreateParams = {
+export type TContentCreateParams = {
   title: string;
   description: string;
 };

@@ -1,27 +1,18 @@
 import { useState } from "react";
-import { generateContent } from "../utils/openai";
+
 import ContentViewer from "../components/dashboard/content-viwer";
 import ContentCreate from "../components/dashboard/content-create";
-import type { ContentCreateParams } from "../shared/types/content-create-params";
-import { useAppContext } from "../context/app.context";
-import toast from "react-hot-toast";
+
+import { UseContentContext } from "../context/content.context";
+import type { TContentCreateParams } from "../shared/types/content-create-params";
 
 const DashboardHome = () => {
-  const { generatingContent, setGeneratingContent } = useAppContext();
+  const { generateContent, generatingContent } = UseContentContext();
   const [content, setContent] = useState<string | null>(null);
 
-  const handleSubmit = async (params: ContentCreateParams) => {
-    setGeneratingContent(true);
-    const { title, description } = params;
-    try {
-      const result = await generateContent(title, description);
-      setContent(result);
-    } catch (e) {
-      console.log(e, "error accurated");
-      toast.error("Error occurred while generating content");
-    } finally {
-      setGeneratingContent(false);
-    }
+  const handleSubmit = async (params: TContentCreateParams) => {
+    const content = await generateContent(params);
+    setContent(content);
   };
 
   return (

@@ -2,6 +2,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import PromptHistory from "./prompt-history";
 import { useAppContext } from "../../context/app.context";
 import { Loader2Icon } from "lucide-react";
+import { UseContentContext } from "../../context/content.context";
 
 const MocItems = [
   {
@@ -23,7 +24,8 @@ const MocItems = [
 ];
 
 const Sidebar = () => {
-  const { generatingContent, sideBarOpen } = useAppContext();
+  const { sideBarOpen } = useAppContext();
+  const { generatingContent } = UseContentContext();
   const classes = sideBarOpen ? "w-1/2 border-r p-2 " : "w-0";
   return (
     <nav

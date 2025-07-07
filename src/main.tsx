@@ -6,6 +6,7 @@ import DashboardLayouts from "./components/layouts/dashboard-layouts";
 import DashboardHome from "./pages/dashboardHome";
 import { AppContextProvider } from "./context/app.context";
 import { Toaster } from "react-hot-toast";
+import { ContentContextProvider } from "./context/content.context";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Toaster />
     <AppContextProvider>
-      <RouterProvider router={router} />
+      <ContentContextProvider>
+        <RouterProvider router={router} />
+      </ContentContextProvider>
     </AppContextProvider>
   </StrictMode>
 );
