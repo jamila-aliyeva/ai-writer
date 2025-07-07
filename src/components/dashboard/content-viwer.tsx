@@ -1,14 +1,6 @@
 import toast from "react-hot-toast";
 import { Button } from "../ui/button";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+import { Card, CardContent, CardFooter } from "../ui/card";
 
 import ReactMarkdown from "react-markdown";
 type ContentViwerProps = {
@@ -28,16 +20,7 @@ export default function ContentViewer({ content }: ContentViwerProps) {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Login to your account</CardTitle>
-        <CardDescription>
-          Enter your email below to login to your account
-        </CardDescription>
-        <CardAction>
-          <Button variant="link">Sign Up</Button>
-        </CardAction>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 md:p-6 lg:p-8">
         <div className="prose lg:prose-xl">
           <ReactMarkdown>{content}</ReactMarkdown>
         </div>

@@ -23,9 +23,12 @@ const MocItems = [
 ];
 
 const Sidebar = () => {
-  const { generatingContent } = useAppContext();
+  const { generatingContent, sideBarOpen } = useAppContext();
+  const classes = sideBarOpen ? "w-1/2 border-r p-2 " : "w-0";
   return (
-    <nav className=" w-80 border-r h-screen p-4">
+    <nav
+      className={`transition-all duration-500 overflow-x-hidden md:w-80 md:border-r h-screen md:p-4 ${classes}`}
+    >
       <div className=" flex justify-between items-center">
         <h1 className="text-xl font-semibold ">AI Writer</h1>
         {generatingContent ? (

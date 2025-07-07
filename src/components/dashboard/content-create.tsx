@@ -43,7 +43,7 @@ const ContentCreate = ({ isLoading, onSubmit }: ContentCreateProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-4 mt-4"
+        className="space-y-2 md:space-y-4  mt-2 md:mt-4"
       >
         <FormField
           control={form.control}
