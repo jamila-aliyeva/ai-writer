@@ -4,28 +4,10 @@ import { useAppContext } from "../../context/app.context";
 import { Loader2Icon } from "lucide-react";
 import { UseContentContext } from "../../context/content.context";
 
-const MocItems = [
-  {
-    date: "Today",
-    links: [
-      { title: "Prompt 1", url: "/dashboard/prompt/1" },
-      { title: "Prompt 2", url: "/dashboard/prompt/2" },
-      { title: "Prompt 3", url: "/dashboard/prompt/3" },
-    ],
-  },
-  {
-    date: "Yesterday",
-    links: [
-      { title: "Prompt 1", url: "/dashboard/prompt/1" },
-      { title: "Prompt 2", url: "/dashboard/prompt/2" },
-      { title: "Prompt 3", url: "/dashboard/prompt/3" },
-    ],
-  },
-];
-
 const Sidebar = () => {
   const { sideBarOpen } = useAppContext();
-  const { generatingContent } = UseContentContext();
+  const { generatingContent, getPrompsHistory } = UseContentContext();
+  const historyItems = getPrompsHistory();
   const classes = sideBarOpen ? "w-1/2 border-r p-2 " : "w-0";
   return (
     <nav
@@ -41,7 +23,7 @@ const Sidebar = () => {
           </button>
         )}
       </div>
-      <PromptHistory items={MocItems} />
+      <PromptHistory items={historyItems} />
     </nav>
   );
 };

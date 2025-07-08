@@ -2,11 +2,16 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 import type { TContentCreateParams } from "../shared/types/content-create-params";
 import toast from "react-hot-toast";
 import type { TGeneratedContent } from "../shared/types/generated-content";
+import { useLocalStorage } from "react-use";
+import type { TPromptLinks } from "../shared/types/promptTypes";
+import { v4 as uuidv4 } from "uuid";
+import dayjs from "dayjs";
 
 interface IContentContext {
   generatingContent: boolean;
   setGeneratingContent: (value: boolean) => void;
   generateContent: (params: TContentCreateParams) => Promise<string | null>;
+  getPrompsHistory: () => { date: string; links: TPromptLinks[] }[];
 }
 
 export const ContentContext = createContext<IContentContext | null>(null);
@@ -27,23 +32,27 @@ interface IProps {
 
 const ContentContextProvider = ({ children }: IProps) => {
   const [generatingContent, setGeneratingContent] = useState(false);
+  const [contentItems, setContentItems] = useLocalStorage<TGeneratedContent[]>(
+    "contentitems",
+    []
+  );
 
   const generateContent = async (params: TContentCreateParams) => {
     let content = null;
+    getPrompsHistory();
     setGeneratingContent(true);
     const { title, description } = params;
     try {
       content = await generateContent(title, description);
 
-      const generatedContent: TGeneratedContent = {
-        id: "12345",
+      const generatedContentItems: TGeneratedContent = {
+        id: uuidv4(),
         content,
         title,
         description,
         date: new Date(),
       };
-
-      localStorage.setItem("contentItems", JSON.stringify([generatedContent]));
+      setContentItems([generatedContentItems, ...(contentItems || [])]);
     } catch (e) {
       console.log(e, "error accurated");
       toast.error("Error occurred while generating content");
@@ -52,9 +61,42 @@ const ContentContextProvider = ({ children }: IProps) => {
     }
     return content;
   };
+  const getPrompsHistory = () => {
+    if (!contentItems) {
+      return [];
+    }
+    const groupedItems = contentItems.reduce(
+      (prev: { [date: string]: TPromptLinks[] }, next) => {
+        const date = dayjs(next.date).format("DD-MM-YYYY");
+        if (!prev[date]) {
+          prev[date] = [];
+        }
+        prev[date].push({
+          title: next.title,
+          url: `/dashboard/content/${next.id}`,
+        });
+        return prev;
+      },
+      {} as { [date: string]: TPromptLinks[] }
+    );
+    return Object.keys(groupedItems)
+      .sort((a, b) => dayjs(b).diff(a))
+      .map((date) => {
+        return {
+          date,
+          links: groupedItems[date],
+        };
+      });
+  };
+
   return (
     <ContentContext.Provider
-      value={{ generatingContent, setGeneratingContent, generateContent }}
+      value={{
+        generatingContent,
+        setGeneratingContent,
+        generateContent,
+        getPrompsHistory,
+      }}
     >
       {children}
     </ContentContext.Provider>
